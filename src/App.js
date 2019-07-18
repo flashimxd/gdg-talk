@@ -1,43 +1,28 @@
-import React, { useState, useReducer } from 'react';
+import React from 'react';
 import './App.css';
 import ClockComponent from './components/ClockComponent';
 
-const INITIAL_STATE = {
-  visibility: true,
-};
+class App extends React.Component {
+  state = {
+    show: true,
+  };
 
-const CONTANTS = {
-  SHOW_CLOCK: 'show_clock',
-  HIDE_CLOCK: 'hide_clock',
-};
-
-const AppReducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case CONTANTS.SHOW_CLOCK:
-      return { ...state, visibility: true };
-    case CONTANTS.HIDE_CLOCK:
-      return { ...state, visibility: false };
-    default:
-      return state;
+  setVisibility = () => {
+    const { show } = this.state;
+    this.setState({ show: !show });
+  };
+  render() {
+    const { show } = this.state;
+    return (
+      <>
+        <div className="App">
+          {show && <ClockComponent />}
+          <button className="button_container" onClick={this.setVisibility}>{`${
+            show ? 'Hide' : 'Show'
+          } the Clock`}</button>
+        </div>
+      </>
+    );
   }
-};
-
-const App = () => {
-  // const [visibility, setVisibility] = useState(true);
-  const [state, dispatch] = useReducer(AppReducer, INITIAL_STATE);
-  console.log(state);
-  const { visibility } = state;
-  return (
-    <div className="App">
-      {visibility && <ClockComponent />}
-      <button
-        onClick={() => {
-          visibility
-            ? dispatch({ type: CONTANTS.HIDE_CLOCK })
-            : dispatch({ type: CONTANTS.SHOW_CLOCK });
-        }}>{`${visibility ? 'Hide' : 'Show'} the Clock`}</button>
-    </div>
-  );
-};
-
+}
 export default App;
