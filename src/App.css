@@ -1,3 +1,26 @@
 .App {
   text-align: center;
+  margin-top: 5em;
+}
+
+.App > div {
+  padding: 1em
+}
+
+.timer {
+  font-size: 30px;
+  border: 1px dashed blue;
+  padding: 10px;
+  width: 214px;
+  margin: auto;
+}
+
+.button_container {
+  width: 240px;
+    height: 30px;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 7px;
 }
