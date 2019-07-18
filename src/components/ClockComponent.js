@@ -1,38 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { getHours, getMinutes, getSeconds } from 'date-fns';
 
-class Clock extends React.Component {
-  state = {
-    time: '',
-  };
+const getTime = () => {
+  const now = new Date();
+  const minutes = getMinutes(now).toString().length !== 1 ? getMinutes(now) : `0${getMinutes(now)}`;
+  return `${getHours(now)}:${minutes}:${getSeconds(now)}`;
+};
 
-  componentDidMount() {
-    this.timer = setInterval(() => {
-      const time = this.getTime();
-      this.setState({ time });
+const Clock = () => {
+  const [time, setTime] = useState(getTime());
+
+  useEffect(() => {
+    console.log('Component will mount');
+  }, []);
+
+  useEffect(() => {
+    console.log('I will run everytime the time changes');
+    const timer = setInterval(() => {
+      const currentTime = getTime();
+      setTime(currentTime);
     }, 1000);
-  }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
+    return () => {
+      console.log('Component will unmount');
+      clearInterval(timer);
+    };
+  }, []);
 
-  getTime = () => {
-    const now = new Date();
-    const minutes =
-      getMinutes(now).toString().length !== 1 ? getMinutes(now) : `0${getMinutes(now)}`;
-    return `${getHours(now)}:${minutes}:${getSeconds(now)}`;
-  };
-
-  render() {
-    const { time } = this.state;
-    return (
-      <div>
-        <h1>What time is it? </h1>
-        <time>{time}</time>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h1>What time is it? </h1>
+      <time>{time}</time>
+    </div>
+  );
+};
 
 export default Clock;
